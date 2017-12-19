@@ -1,0 +1,15 @@
+flashFxp 
+无法列出目录 解决方法
+
+开启pasv，手动指定端口范围
+vi /etc/vsftpd/vsftpd.conf
+
+pasv_enable=yes
+pasv_min_port=8020
+pasv_max_port=8021
+
+
+同时防火墙映射相关21 8020 端口 
+
+问题解决
+

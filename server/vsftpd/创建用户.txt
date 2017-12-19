@@ -1,0 +1,2 @@
+useradd -d /data/dns1 -m bangde
+passwd bangde
