@@ -1,0 +1,118 @@
+install 
+
+
+wget -P /etc/yum.repos.d/ https://download.openvz.org/openvz.repo
+rpm --import http://download.openvz.org/RPM-GPG-Key-OpenVZ
+
+yum install vzkernel for centos6.x以上
+
+vi /etc/sysctl.conf
+# On Hardware Node we generally need
+# packet forwarding enabled and proxy arp disabled
+net.ipv4.ip_forward = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.forwarding = 1
+net.ipv4.conf.default.proxy_arp = 0
+
+# Enables source route verification
+net.ipv4.conf.all.rp_filter = 1
+
+# Enables the magic-sysrq key
+kernel.sysrq = 1
+
+# We do not want all our interfaces to send redirects
+net.ipv4.conf.default.send_redirects = 1
+net.ipv4.conf.all.send_redirects = 0
+
+tools installation
+
+yum install vzctl vzquota ploop
+
+
+
+rhel5 64位系统请安装：
+# yum install ovzkernel.x86_64  #必须加上x86_64
+# yum install vzctl.x86_64 vzquota.x86_64
+
+
+# yum install ovzkernel.x86_64  #必须加上x86_64
+# yum install vzctl.x86_64 vzquota.x86_64
+
+# chkconfig --list vz 
+vz             	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+
+# reboot
+
+
+# vi openvz.repo
+找到[openvz-kernel-rhel5]，把下面enabled值改为1
+找到[openvz-kernel-rhel5-testing]，把下面enabled值改为1
+必须进行这两步，否则会提示“No package ovzkernel available”的错误
+
+
+The program package-cleanup is found in the yum-utils package.
+
+solution:
+yum clean all
+rpm --rebuilddb
+yum update
+
+
+
+创建虚拟机
+
+cd /vz/template/cache
+wget https://download.openvz.org/template/precreated/centos-6-x86_64-minimal.tar.gz
+
+vzctl create 1 --ostemplate centos-6-x86_64-minimal --hostname wuyu
+
+No ploop support in the kernel, or kernel is way too old
+
+It seems you are using EL5 kernel. Edit /etc/vz/vz.conf
+change:
+VE_LAYOUT=ploop
+to:
+VE_LAYOUT=simfs
+
+– reboot server
+
+
+vzctl create 101 --ostemplate centos-6-x86_64-minimal
+vzctl set 101 --ipadd 172.16.10.152 --save
+vzctl set 101 --nameserver 61.128.128.68 --save
+vzctl set 101 --physpages 0:unlimited --save
+vzctl set 101 --ram 512M --swap 1G --save (6.x以上)
+vzctl set 101 --onboot yes --save
+vzctl set 101 --diskspace 20G:20G --save
+vzctl set 101 --hostname wuyu --save
+vzctl set 102 --capability sys_time:on --save
+vzctl start 101
+vzctl exec 101 passwd
+
+vzctl enter 101
+
+
+vzctl exec CTID ps ax
+vzctl stop CTID
+vzctl destroy CTID
+
+
+vzlist -a 
+
+
+vi /etc/vz/vz.conf
+
+/data/vz/root
+
+
+
+
+
+
+使用openvpn需要开启tun设备的支持：
+vzctl set CTID --devnodes net/tun:rw --save
+vzctl set CTID --devices c:10:200:rw --save
+vzctl set CTID --capability net_admin:on --save
+vzctl exec CTID mkdir -p /dev/net
+vzctl exec CTID chmod 600 /dev/net/tun
+
