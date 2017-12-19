@@ -1,0 +1,4 @@
+libnuma.so.1()(64bit) is needed by
+
+yum -y install numactl 
+
