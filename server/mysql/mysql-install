@@ -1,0 +1,93 @@
+参考文章
+http://dev.mysql.com/doc/refman/5.6/en/linux-installation.html
+http://dev.mysql.com/downloads/repo/yum/
+http://dev.mysql.com/doc/refman/5.6/en/linux-installation-rpm.html
+
+
+centos 6.5 mini
+mysql 5.6 
+
+yum install wget
+
+wget http://dev.mysql.com/get/mysql57-community-release-el6-8.noarch.rpm
+
+rpm -qa | grep mysql
+yum remove mysql-libs
+
+rpm -ivh mysql57-community-release-el6-8.noarch.rpm
+vi /etc/yum.repos.d/mysql-community.repo
+
+# Enable to use MySQL 5.6
+[mysql56-community]
+name=MySQL 5.6 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-5.6-community/el/6/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+yum install mysql-community-server
+
+
+
+service mysqld start
+
+mysql_secure_installation
+
+
+vi /etc/my.cnf
+[mysqld]
+character-set-server=utf8mb4
+
+
+mkdir -p /data/var/log
+chown -R mysql:mysql /data/var/log
+
+mkdir -p /data/var/run/mysqld
+chowm -R mysql:mysql /data/var/run/mysqld
+
+
+mkdir -p /var/run/mysql/
+chown -R mysql:mysql /var/run/mysql
+
+mdkir -p /data/mysql/mysql
+mkdir -p /data/mysql/data
+chown -R mysql:mysql /data/mysql
+
+mkdir -p /data/mysql/logs/bin-log/
+chown -R mysql:mysql /data/mysql
+
+service mysqld start
+
+
+
+字符集
+
+show variables like '%character%';
+
+
+查看支持字符集
+show char set;
+
+创建用户 
+
+CREATE USER 'kuanrf_st'@'localhost' IDENTIFIED BY 'kuanrf1234$';
+
+删除账户及权限：
+
+>drop user 用户名@'%';
+
+>drop user 用户名@ localhost;
+
+
+jdbc.username=kuanrf_st
+jdbc.password=kuanrf1234$
+
+授权
+
+GRANT ALL PRIVILEGES ON kuanrf_st.* TO 'kuanrf_st'@'%' IDENTIFIED BY 'kuanrf1234$' WITH GRANT OPTION;
+
+
+
+
+
+
