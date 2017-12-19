@@ -1,0 +1,2 @@
+修改字符集
+alter table student convert to charset utf8;
