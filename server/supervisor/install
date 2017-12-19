@@ -1,0 +1,73 @@
+yum install python-setuptools
+easy_install supervisor
+
+yum install supervisor
+
+echo_supervisord_conf > /etc/supervisor/supervisord.conf
+
+[include]
+files = /etc/supervisord.d/*.conf
+
+
+[inet_http_server]  
+port=172.16.10.72:9001
+
+
+[program:cashier]
+command=/data/app/cashier/tomcat6.0.44/bin/catalina.sh run
+umask=022
+user=root
+redirect_stderr=true
+
+supervisorctl reload
+
+supervisorctl status
+
+
+
+
+supervisor手动启动：
+
+#/usr/bin/supervisord -c /etc/supervisord.conf
+/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+
+
+yum -y install python-pip
+pip install supervisor
+
+[program:tomcat]
+command=/data/tomcat/bin/catalina.sh run
+
+
+
+
+[program:redis]
+command=/usr/local/bin/redis-server /usr/local/etc/redis.conf
+autostart=true
+autorestart=true
+startsecs=3
+
+
+echo_supervisord_conf > /etc/supervisord.conf
+如果上面的命令运行报错
+Traceback (most recent call last):
+  File "/usr/bin/echo_supervisord_conf", line 5, in <module>
+    from pkg_resources import load_entry_point
+  File "/usr/lib/python2.6/site-packages/pkg_resources.py", line 2655, in <module>
+    working_set.require(__requires__)
+  File "/usr/lib/python2.6/site-packages/pkg_resources.py", line 648, in require
+    needed = self.resolve(parse_requirements(requirements))
+  File "/usr/lib/python2.6/site-packages/pkg_resources.py", line 546, in resolve
+    raise DistributionNotFound(req)
+pkg_resources.DistributionNotFound: meld3>=0.6.5
+解决方法：进入/usr/lib/python2.6/site-packages/supervisor-3.3.1-py2.6.egg-info/requires.txt 将meld3 >= 0.6.5 这一行注释掉，再重新执行即可。
+
+
+
+gave up: redis entered FATAL state, too many start retries too quickly
+
+修改redis.conf的daemonize为no
+
+
+
+supervisorctl update
