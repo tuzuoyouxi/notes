@@ -1,0 +1,53 @@
+install zabbix 3.2.1
+
+yum install wget -y
+
+
+wget http://repo.zabbix.com/zabbix/3.2/rhel/6/x86_64/zabbix-release-3.2-1.el6.noarch.rpm 
+
+yum -y install httpd httpd-devel
+
+
+
+
+
+
+
+yum -y install httpd httpd-devel
+
+wget http://dev.mysql.com/get/mysql57-community-release-el6-8.noarch.rpm
+yum remove mysql-libs
+
+rpm -ivh mysql57-community-release-el6-8.noarch.rpm
+vi /etc/yum.repos.d/mysql-community.repo
+
+# Enable to use MySQL 5.6
+[mysql56-community]
+name=MySQL 5.6 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-5.6-community/el/6/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+yum install mysql-community-server
+
+service mysqld start
+
+mysql_secure_installation
+
+yum -y install php php-mysql php-common php-gd php-mbstring php-mcrypt php-devel php-xml php-bcmath perl-DBI net-snmp-devel
+
+
+
+yum install zabbix-server-mysql zabbix-web-mysql
+
+shell> mysql -uroot -p<your root password>
+mysql> create database zabbix character set utf8 collate utf8_bin;
+mysql> grant all privileges on zabbix.* to zabbix@localhost identified by '<new password for zabbix user on zabbix database>';
+mysql> quit;
+
+
+ zcat /usr/share/doc/zabbix-server-mysql-3.2.X/create.sql.gz | mysql -uzabbix -p zabbix
+
+rpm -q zabbix-server-mysql
+
