@@ -1,0 +1,9 @@
+error: permission denied on key 'vm.max_map_count'
+
+  代码如下       复制代码 
+rm -f /sbin/modprobe  
+ln -s /bin/true /sbin/modprobe 
+修复sysctl的： 
+  代码如下       复制代码 
+rm -f /sbin/sysctl  
+ln -s /bin/true /sbin/sysctl 
