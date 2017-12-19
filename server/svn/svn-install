@@ -1,0 +1,43 @@
+yum -y install subversion
+
+svnserve --version
+
+创建svn版本库
+
+mkdir /data/svn
+svnadmin create /data/svn/test.one.com 
+ 
+
+启动svn
+svnserve -d -r /data/svn/
+
+
+编辑 authz 文件
+
+[/]
+* = rw
+
+编辑 passwd 文件
+deploy=cqjuhefu
+
+编辑svnserve.conf
+anon-access = read
+auth-access = write
+password-db = passwd
+authz-db = authz
+
+
+
+svn checkout svn://192.168.116.11/jar-riskconsumer.juhefu.cn ./  更新到本地目录
+
+svn commit (ci)
+
+svn update 
+
+svn add jar-riskconsumer.juhefu.cn
+
+svn ci -m ''
+
+svn log | more  查看历史版本
+
+ 
