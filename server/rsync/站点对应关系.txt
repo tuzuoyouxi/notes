@@ -1,0 +1,31 @@
+prjdf  192.168.115.10   cashier
+crdub  192.168.115.10   gateway
+erwcb  192.168.115.10   jarapp
+kr34q  192.168.115.10   merch
+fr6q0  192.168.115.10   nmerch
+rdk4q  192.168.115.10   prehst
+b3q0i  192.168.115.10   www
+
+
+
+pr2df  192.168.115.12  cashier
+drfgb  192.168.115.12  gateway
+hgwcb  192.168.115.12  hxdf
+23tgq  192.168.115.12  merch
+nfj76  192.168.115.12  nmerch
+nc75w  192.168.115.12  pingan
+cjfk4  192.168.115.12  precjzf
+dllsd  192.168.115.12  preght
+cikh8  192.168.115.12  prepf
+65nva  192.168.115.12  prexy
+cjg6z  192.168.115.12  preys
+cnfht  192.168.115.12  prezx
+qws1l  192.168.115.12  www
+lz9sr  192.168.115.12  yywg
+
+
+jckw7  192.168.115.11 cashier
+igh36  192.168.115.11 imanage
+ns73n  192.168.115.11 merch
+kc7ta  192.168.115.11 nginx
+

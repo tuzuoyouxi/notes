@@ -1,0 +1,7 @@
+rsync -avzP --progress --delete rsync://192.168.85.236:873/test /cygdrive/d/test
+
+
+
+rsync.conf лМ╪сртобеДжц
+UID=0
+GID=0
