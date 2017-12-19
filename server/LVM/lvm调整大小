@@ -1,0 +1,21 @@
+[root@localhost ~]# df -h
+Filesystem                    Size  Used Avail Use% Mounted on
+/dev/mapper/VolGroup-lv_root   50G  762M   46G   2% /
+tmpfs                         939M     0  939M   0% /dev/shm
+/dev/sda1                     485M   32M  428M   7% /boot
+/dev/mapper/VolGroup-lv_home   45G  180M   43G   1% /home
+
+
+umount /home 
+
+e2fsck -f /dev/mapper/VolGroup-lv_home
+
+resize2fs /dev/mapper/VolGroup-lv_home 5G
+lvreduce -L -40G /dev/mapper/VolGroup-lv_home
+
+mount /home
+
+lvextend -L +40G /dev/mapper/VolGroup-lv_root 
+
+resize2f /dev/mapper/VolGroup-lv_root
+
