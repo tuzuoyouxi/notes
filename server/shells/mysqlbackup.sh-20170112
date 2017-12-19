@@ -1,0 +1,11 @@
+#!/bin/bash
+innobackupex  --defaults-file=/etc/my.cnf --slave-info  --user=root --password='jhf2016)@#idcmasterdb'  --host 127.0.0.1 /data/mysql_backup
+chmod -R 755 /data/mysql_backup_local
+
+date=`date +%F`
+cd /data/mysql_backup/${date}_02-00-01
+tar czvf /data/backup/${date}_02-00-01.tar.gz /data/mysql_backup/${date}_02-00-01
+cd /data/mysql_backup
+rm -rf ${date}_02-00-01
+
+

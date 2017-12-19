@@ -1,0 +1,4 @@
+#!/bin/bash
+date=`date +%F`
+cd /data/mysql_backup/${date}_04-00-01
+tar cvf /data/backup/${date}_04-00-01.tar.gz /data/mysql_backup/${date}_04-00-01
