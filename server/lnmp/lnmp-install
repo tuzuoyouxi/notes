@@ -1,0 +1,94 @@
+http://www.blogjava.net/nkjava/archive/2015/01/20/422289.html
+centos 6.5 安装nginx
+
+nginx version: nginx/1.10.1
+
+vi /etc/yum.repos.d/nginx.repo
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/OS/OSRELEASE/$basearch/
+gpgcheck=0
+enabled=1
+ 
+Replace “OS” with “rhel” or “centos”, depending on the distribution used, and “OSRELEASE” with “5”, “6”, or “7”, for 5.x, 6.x, or 7.x versions, respectively.
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/6/$basearch/
+gpgcheck=0
+enabled=1
+
+
+
+yum install nginx
+
+nginx -v 
+
+
+
+安装mysql
+
+yum remove mysql*
+
+rpm -ivh http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+
+yum install mysql-server
+
+service mysqld start
+
+mysql_secure_installation
+
+cqjuhefu
+
+
+rpm -ivh http://ftp.iij.ad.jp/pub/linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+
+
+安装PHP 5.6
+ rpm -ivh http://mirror.webtatic.com/yum/el6/latest.rpm
+
+yum install php56w php56w-mysql php56w-gd php56w-imap php56w-ldap php56w-odbc php56w-pear php56w-xml php56w-xmlrpc php56w-mcrypt php56w-mbstring php56w-devel php56w-pecl-memcached  php56w-common php56w-pdo php56w-cli php56w-pecl-memcache php56w-bcmath php56w-fpm
+
+
+yum install -y php php-bcmath php-fpm php-gd php-json php-mbstring php-mcrypt php-mysqlnd php-opcache php-pdo php-pdo_dblib php-pgsql php-recode php-snmp php-soap php-xml  php-pecl-zip
+
+
+service php-fpm start
+
+php-fpm日志目录
+/var/log/php-fpm/error.log
+
+
+Error: Package: php56w-mcrypt-5.6.30-1.w6.x86_64 (webtatic)
+           Requires: libmcrypt.so.4()(64bit)
+ You could try using --skip-broken to work around the problem
+ You could try running: rpm -Va --nofiles --nodigest
+
+ yum  install epel-release  //扩展包更新包
+yum  update //更新yum源
+yum install libmcrypt libmcrypt-devel mcrypt mhash  就ok了
+
+
+
+php页面打不开
+2017/07/24 14:06:35 [warn] 1910#1910: *14 an upstream response is buffered to a temporary file /var/cache/nginx/fastcgi_temp/1/00/0000000001 while reading upstream, client: 192.168.5.70, server: localhost, request: "GET /index.php HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "192.168.5.73"
+
+
+ 
+
+$document_root
+
+location ~ \.php$ {
+        root           /usr/share/nginx/html;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+
+
+
+ 
