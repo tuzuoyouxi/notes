@@ -1,0 +1,174 @@
+centos 6.5 mini
+nginx 1.6.3
+keepalived-1.2.23
+
+安装依赖包
+yum install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel
+
+安装nginx
+
+centos 6.5 安装nginx
+
+nginx version: nginx/1.10.1
+
+vi /etc/yum.repos.d/nginx.repo
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/OS/OSRELEASE/$basearch/
+gpgcheck=0
+enabled=1
+ 
+Replace “OS” with “rhel” or “centos”, depending on the distribution used, and “OSRELEASE” with “5”, “6”, or “7”, for 5.x, 6.x, or 7.x versions,  
+respectively.
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/6/$basearch/
+gpgcheck=0
+enabled=1
+
+
+
+yum install nginx
+
+nginx -v 
+
+vi /etc/nginx/conf.d/test.conf
+
+upstream hello{
+    server 192.168.3.50:80 weight=1;
+    server 192.168.3.62:80 weight=1;            
+}
+   
+server {
+   
+    listen       80;
+    server_name  localhost;
+    
+    location /nginxstatus{
+         stub_status on;
+         access_log on;
+         auth_basic "nginxstatus";
+         auth_basic_user_file htpasswd;
+    }
+    
+    location / {
+        index index.jsp;
+        proxy_pass   http://hello;    
+        proxy_redirect             off; 
+        proxy_set_header           Host $host; 
+        proxy_set_header           X-Real-IP $remote_addr; 
+        proxy_set_header           X-Forwarded-For $proxy_add_x_forwarded_for; 
+        client_max_body_size       10m; 
+        client_body_buffer_size    128k;
+        proxy_connect_timeout      300; 
+        proxy_send_timeout         300; 
+        proxy_read_timeout         300; 
+        proxy_buffer_size          4k; 
+        proxy_buffers              4 32k; 
+        proxy_busy_buffers_size    64k;
+        proxy_temp_file_write_size 64k;
+    }
+}
+
+
+
+重启nginx 访问http://192.168.3.60
+
+keepalived安装配置
+
+tar xvf keepalived-1.2.23.tar.gz
+cd keepalived-1.2.23
+./configure --prefix=/opt/keepalived
+
+make
+make install
+
+cp /opt/keepalived/sbin/keepalived  /usr/sbin/
+cp /opt/keepalived/etc/sysconfig/keepalived  /etc/sysconfig/
+cp /opt/keepalived/etc/rc.d/init.d/keepalived  /etc/init.d/
+cp /opt/keepalived/etc/keepalived/keepalived.conf  /etc/keepalived/keepalived.conf
+
+
+MASTER 配置
+
+! Configuration File for keepalived
+
+global_defs {
+   notification_email {
+     acassen@firewall.loc
+     failover@firewall.loc
+     sysadmin@firewall.loc
+   }
+   notification_email_from Alexandre.Cassen@firewall.loc
+   smtp_server 192.168.200.1
+   smtp_connect_timeout 30
+   router_id LVS_DEVEL
+   vrrp_skip_check_adv_addr
+   vrrp_strict
+   vrrp_garp_interval 0
+   vrrp_gna_interval 0
+}
+
+vrrp_instance VI_1 {
+    state MASTER
+    interface eth0
+    virtual_router_id 51
+    priority 90
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    virtual_ipaddress {
+        192.168.3.80
+    }
+}
+
+
+
+BACKUP 配置
+
+! Configuration File for keepalived
+
+global_defs {
+   notification_email {
+     acassen@firewall.loc
+     failover@firewall.loc
+     sysadmin@firewall.loc
+   }
+   notification_email_from Alexandre.Cassen@firewall.loc
+   smtp_server 192.168.200.1
+   smtp_connect_timeout 30
+   router_id LVS_DEVEL
+   vrrp_skip_check_adv_addr
+   vrrp_strict
+   vrrp_garp_interval 0
+   vrrp_gna_interval 0
+}
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface eth0
+    virtual_router_id 51
+    priority 90
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    virtual_ipaddress {
+        192.168.3.80
+    }
+}
+
+
+然后启动服务 
+service keepalived start
+
+
+访问http://192.168.3.80 可以看到负载站点的切换 
+关闭其中一台电源  稍等几秒 就可以看到自动切换 
+可以ping 192.168.3.80 -t  检测切换状态
+
