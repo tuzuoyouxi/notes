@@ -1,0 +1,15 @@
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2)
+
+vi /etc/my.cnf
+[client]
+socket=/data/var/lib/mysql/mysql.sock
+
+/etc/init.d/mysql stop
+mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
+mysql -u root mysql
+
+ UPDATE user SET Password=PASSWORD('newpassword') where USER='root';
+
+FLUSH PRIVILEGES;
+quit
+
