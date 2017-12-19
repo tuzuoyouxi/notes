@@ -1,0 +1,17 @@
+备份脚本
+
+c:
+cd "c:\program files\mysql\mysql server 5.6\bin"
+mysqldump -uroot -p987654321 empirecms > "d:\backup\mysql\empirecms_%Date:~0,4%%Date:~5,2%%Date:~8,2%%Time:~0,2%%Time:~3,2%.sql"
+mysqldump -uroot -p987654321 test > "d:\backup\mysql\test_%Date:~0,4%%Date:~5,2%%Date:~8,2%%Time:~0,2%%Time:~3,2%.sql"
+mysqldump -uroot -p987654321 ultrax > "d:\backup\mysql\ultrax_%Date:~0,4%%Date:~5,2%%Date:~8,2%%Time:~0,2%%Time:~3,2%.sql"
+mysqldump -uroot -p987654321 --all-databases > "d:\backup\mysql\full_%Date:~0,4%%Date:~5,2%%Date:~8,2%%Time:~0,2%%Time:~3,2%.sql"
+
+pause
+
+
+
+还原
+
+mysql -uroot -p --default-character-set=utf8 < full.sql 
+
