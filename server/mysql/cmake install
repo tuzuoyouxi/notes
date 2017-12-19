@@ -1,0 +1,46 @@
+yum -y install cmake
+
+cmake \
+-DCMAKE_INSTALL_PREFIX=/opt/mysql \
+-DMYSQL_DATADIR=/opt/mysql/data \
+-DSYSCONFDIR=/etc \
+-DEXTRA_CHARSETS=all \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci \
+-DMYSQL_UNIX_ADDR=/opt/mysql/mysql.sock \
+-DMYSQL_TCP_PORT=3306 \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+-DWITH_PERFSCHEMA_STORAGE_ENGINE=1 \
+
+yum -y install gcc gcc-c++ bison ncurses-devel
+
+rm CMakeCache.txt
+
+make 
+
+make install
+
+useradd mysql
+cd /usr/local/mysql
+chown -R mysql .
+chgrp -R mysql .
+scripts/mysql_install_db --user=mysql
+chown -R root .
+chown -R mysql data
+cp support-files/mysql.server /etc/init.d/mysql
+
+chmod 755 /etc/init.d/mysql
+
+service mysql start
+
+cp support-files/my-default.cnf  /etc/my.cnf
+
+[mysqld]
+basedir = /opt/mysql
+datadir = /opt/mysql/data
+sock = /tmp/mysql.sock
+
+
+
