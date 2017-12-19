@@ -1,0 +1,25 @@
+i_sort_jnl
+i_order_info 
+i_order_info_his 
+
+SELECT count(1) from i_order_info_his where ORDER_COM_TIME =20161214;
+
+
+
+
+grant all privileges on gateway.* to wuyu@'%' identified by 'wuyu123456';
+
+
+Error: page 354 log sequence number 325212917336 InnoDB: is in the future! Current system log sequence number 317583977494. InnoDB: Your database may be corrupt or you may have copied the InnoDB InnoDB: tablespace but not the InnoDB log files. See
+
+
+I can successfully start mysqld by doing either of 2 things.
+
+1) add 'innodb_force_recovery=4' to [mysqld] in my.cnf
+
+or....
+
+2) set 'innodb_change_buffering=none' in my.cnf 
+
+Number 1 does number 2 on it's own as well as disables any innodb table stats. However, just adding 'innodb_stats_persistent=0' to my.cnf alone does *not* fix the problem, so the issues seems to be related to the innodb insert/change buffer. I have tried the exact same data and databases on the same exact EC2 instance using MySQL-server-5.6.10-1.el6.x86_64 as well as MySQL-server-5.6.13-1.el6.x86_64. The results are always the same.
+
