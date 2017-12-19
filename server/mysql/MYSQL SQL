@@ -1,0 +1,33 @@
+show create database   //查看默认字符集
+
+ALTER DATABASE itcast DEFAULT CHARACTER SET gbk COLLATE gbk_bin; 
+//修改默认字符集
+
+DROP DATABASE itcast   //删除数据库
+
+CREATE TABLE tb_grade   //创建表
+(
+id INT(11),
+name VARCHAR(20),
+grade FLOAT
+);
+
+show create table tb_grade;  //查看数据表
+
+DESCRIBE tb_grade;
+
+ALTER TABLE tb_grade RENAME grade;  //修改表名
+
+ALTER TABEL grade change name username varchar(20);  修改字段名
+
+
+ALTER TABLE grade modify id int(20);  //修改字段数据类型
+
+ALTER TABEL grade ADD age int(10);  //增加字段
+
+ALTER TABLE grade DROP age ; // 删除字段
+
+ALTER TABLE grade MODIFY int(20) FIRST; //修改字段排列为第一
+
+ALTER TABLE grade MODIFY int(20) AFTER grade ; //修改int字段到grade后
+
