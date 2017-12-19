@@ -1,0 +1,78 @@
+cd /etc/yum.repos.d/
+wget http://mirrors.163.com/.help/CentOS5-Base-163.repo
+
+sed -i 's#$releasever#5#g' CentOS5-Base-163.repo
+
+yum clean all
+
+yum makecache
+
+yum -y install nfs-utils portmap rpcbind
+
+vi /etc/exports
+/data/app/merch/tomcat6/logs 192.168.116.11/32(ro,async,no_wdelay,all_squash,insecure)
+
+showmount -e 192.168.2.140
+showmount -e 
+
+客户端挂载
+
+mount -t nfs -o ro 192.168.2.140:/data /mnt/data
+
+
+mount -t nfs -o ro 192.168.115.12:/data/app/pre-qhyl.ronghexx.com/logs /mnt/curlogs/app.two.com/pre-qhyl.ronghexx.com
+mount -t nfs -o ro 192.168.115.12:/data/app/prepf/tomcat-6.0.45/logs /mnt/curlogs/app.two.com/prepf 
+
+mount -t nfs -o ro 192.168.115.11:/home/monitor/tomcat6.0.45-monitor/logs /mnt/curlogs/app.admin.com/monitor
+
+
+mount -t nfs -o ro 192.168.115.11:/data/logs  /mnt/curlogs/app.admin.com/logs
+
+
+mount -t nfs -o rw 10.100.1.188:/mnt/file  /mnt/file
+
+第一列：欲共享出去的目录，也就是想共享到网络中的文件系统；
+第二列：可访问主机
+192.168.152.13 指定IP地址的主机 
+nfsclient.test.com 指定域名的主机 
+192.168.1.0/24 指定网段中的所有主机 
+*.test.com        指定域下的所有主机 
+*                       所有主机 
+第三列：共享参数
+下面是一些NFS共享的常用参数： 
+ ro                    只读访问 
+ rw                   读写访问 
+ sync                所有数据在请求时写入共享 
+ async              NFS在写入数据前可以相应请求 
+ secure             NFS通过1024以下的安全TCP/IP端口发送 
+ insecure          NFS通过1024以上的端口发送 
+ wdelay            如果多个用户要写入NFS目录，则归组写入（默认） 
+ no_wdelay      如果多个用户要写入NFS目录，则立即写入，当使用async时，无需此设置。 
+ Hide                在NFS共享目录中不共享其子目录 
+ no_hide           共享NFS目录的子目录 
+ subtree_check   如果共享/usr/bin之类的子目录时，强制NFS检查父目录的权限（默认） 
+ no_subtree_check   和上面相对，不检查父目录权限 
+ all_squash               共享文件的UID和GID映射匿名用户anonymous，适合公用目录。 
+ no_all_squash         保留共享文件的UID和GID（默认） 
+ root_squash             root用户的所有请求映射成如anonymous用户一样的权限（默认） 
+ no_root_squas         root用户具有根目录的完全管理访问权限 
+ anonuid=xxx            指定NFS服务器/etc/passwd文件中匿名用户的UID
+
+
+
+mount: wrong fs type, bad option, bad superblock on 10.100.1.188:/mnt/file,
+解决方法
+yum install nfs-utils
+
+Starting NFS quotas: Cannot register service: RPC: Unable to receive; errno = Connection refused
+解决方法
+[root@bjs0- ~]# /etc/init.d/rpcbind start
+Starting rpcbind:                                          [  OK  ]
+[root@bjs0- ~]# /etc/init.d/rpcidmapd start
+Starting RPC idmapd:                                       [  OK  ]
+[root@bjs0- ~]# /etc/init.d/nfs start
+Starting NFS services:                                     [  OK  ]
+Starting NFS quotas:                                       [  OK  ]
+Starting NFS mountd:                                       [  OK  ]
+Starting NFS daemon:                                       [  OK  ]
+
