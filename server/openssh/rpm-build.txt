@@ -1,0 +1,63 @@
+centos 6.5 mini X64
+
+安装rpm-build
+yum -y install rpm-build
+
+
+生成rpmbuild目录
+rpmbuild test.spec
+
+用 rpmbuild -bs 来产生 SRPMS
+用 rpmbuild -bb 来产生 RPMS
+用 rpmbuild -ba 来同时产生 SRPMS 及 RPMS（一般只需直接执行这句）
+
+[root@localhost SPECS]# rpmbuild -ba openssh.spec 
+error: Failed build dependencies:
+	openssl-devel is needed by openssh-7.5p1-1.x86_64
+	glibc-devel is needed by openssh-7.5p1-1.x86_64
+	krb5-devel is needed by openssh-7.5p1-1.x86_64
+
+
+解决
+yum -y install openssl-devel glibc-devel krb5-devel 
+
+
+[root@localhost SPECS]# rpmbuild -ba openssh.spec 
+
+configure: error: in `/root/rpmbuild/BUILD/openssh-7.5p1':
+configure: error: no acceptable C compiler found in $PATH
+See `config.log' for more details
+error: Bad exit status from /var/tmp/rpm-tmp.5WA6El (%build)
+
+
+RPM build errors:
+    Bad exit status from /var/tmp/rpm-tmp.5WA6El (%build)
+
+yum -y install gcc
+
+
+[root@localhost SPECS]# rpmbuild -ba openssh.spec
+ 
+configure: error: PAM headers not found
+error: Bad exit status from /var/tmp/rpm-tmp.arpvQM (%build)
+
+
+RPM build errors:
+    Bad exit status from /var/tmp/rpm-tmp.arpvQM (%build)
+
+yum -y install pam-devel
+
+[root@localhost SPECS]# rpmbuild -ba openssh.spec 
+
+
+cd /root/rpmbuild/RPMS/x86_64
+rpm -Uvh *.rpm 
+
+
+ssh -V 
+
+
+远程SSH Sftp 连接不上  请关闭selinux
+
+
+
