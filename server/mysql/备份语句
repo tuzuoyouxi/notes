@@ -1,0 +1,8 @@
+mysqldump -u root -p databasename > test.sql
+
+mysqldump -u root -p gateway > gateway.sql
+
+mysql databasename < gateway.sql
+
+mysql -u root -p gateway < gateway.sql
+
