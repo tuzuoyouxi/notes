@@ -1,0 +1,44 @@
+by ddkxiaobai
+
+调整空闲分区容量建立新逻辑分区
+实验目的
+1.减少/分区剩余容量1G
+2.创建新的逻辑分区/test大小1G
+3.格式化文件系统
+
+
+1.减少/分区剩余容量1G
+
+#fdisk -l
+
+查看lv信息
+#lvs
+#lvdisplay
+
+#lvresize -L -1G /dev/VolGroup00/root
+
+#lvs
+#lvdisplay
+
+#vgs
+#vgdisplay
+
+2.创建新的逻辑分区/opt大小1G
+#lvcreate -L 1G -n opt VolGroup00
+
+#lvs
+#lvdisplay
+
+3.格式化文件系统
+
+#mkfs -t ext3 /dev/VolGroup00/test
+
+#mkdir /test
+
+修改/etc/fstab
+/dev/wwwVG/test        /test     ext3    defaults 0 0
+
+#mount -a
+
+#df -h
+

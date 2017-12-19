@@ -1,0 +1,22 @@
+by ddkxiaobai
+
+缩减减少分区容量
+
+减少/home分区大小
+
+格式1：lvreduce <-L/--size -逻辑卷增量[kKmMgGtT]> <逻辑卷设备名称>
+格式2：lvreduce <-l/--extents -LogicalExtentsNumber> <逻辑卷设备名称>
+#lvreduce -L -512M /dev/VolGroup00/home 
+#lvresize -L -512M /dev/VolGroup00/home
+
+#lvs
+#lvdisplay
+
+#vgs
+#vgdisplay
+
+#pvs
+#pvdisplay
+
+
+

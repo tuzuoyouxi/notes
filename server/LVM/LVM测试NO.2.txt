@@ -1,0 +1,68 @@
+by ddkxiaobai
+
+vg:00
+lv: root;home;swap
+
+
+
+LVM 测试 NO.2
+
+卷组中无剩余空间,扩展卷组
+1.添加硬盘256M
+2.在磁盘上创建LVM分区
+3.在LVM分区上创建物理卷
+4.将物理卷添加到默认卷组
+5.扩展逻辑卷/home
+
+
+1.添加硬盘
+#fdisk -l
+
+2.在磁盘上创建LVM分区
+#fdisk /dev/hdb
+Command (m for help): n
+Command (m for help): t
+Command (m for help): p
+Command (m for help): w
+#fdisk -l
+
+
+3.在LVM分区上创建物理卷
+#pvcreate /dev/hdb1 
+
+4.将物理卷添加到卷组
+vgextend <卷组名> <物理卷设备名> [<物理卷设备名> ...]
+
+先查看后哪些卷组
+#vgs 
+#vgdisplay 
+
+#vgextend VolGroup00 /dev/hdb1 
+Volume group "VolGroup00" successfully extended
+
+#vgs 
+#vgdisplay
+
+
+5.扩展逻辑卷
+格式1：lvextend <-L/--size +逻辑卷增量[kKmMgGtT]> <逻辑卷设备名称>
+格式2：lvextend <-l/--extents +LogicalExtentsNumber> <逻辑卷设备名称>
+
+#lvdisplay
+
+#lvextend -L +252M /dev/VolGroup00/home
+
+#lvs
+#lvdisplay
+查看逻辑卷home的容量已经被扩容
+
+扩展文件系统容量
+
+#df -h
+#umount /home       //使用 resize2fs 命令之前需卸载文件系统 
+#resize2fs -f /home
+
+#df -h 
+
+若要对 / 分区 /usr 分区等进行操作，需要使用 Live-CD 的 rescue 模式启动系统
+

@@ -1,0 +1,172 @@
+by ddkxiaobai 
+
+LVM 测试 NO.1
+
+1.新添加256M硬盘
+2.在新硬盘上创建物理卷
+3.将新创建的物理卷添加到卷组test
+4.在卷组test种创建逻辑卷
+5.在逻辑卷中创建ext3文件系统
+6.将创建的文件系统挂载到/www
+
+
+
+1.新添加256M硬盘
+查看磁盘信息
+#fdisk -l
+
+Disk /dev/hda: 10.7 GB, 10737377280 bytes
+255 heads, 63 sectors/track, 1305 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+ 
+   Device Boot      Start         End      Blocks   Id  System
+/dev/hda1   *           1          13      104391   83  Linux
+/dev/hda2              14        1305    10377990   8e  Linux LVM
+ 
+Disk /dev/hdb: 268 MB, 268369920 bytes
+16 heads, 63 sectors/track, 520 cylinders
+Units = cylinders of 1008 * 512 = 516096 bytes
+ 
+Disk /dev/hdb doesn't contain a valid partition table
+
+从上可以看到有两块磁盘,/dev/hda(10.7 GB) 和/dev/hdb(268 MB). 
+/dev/hdb 是新加入的 没有分区表
+
+在/dev/hdb硬盘上创建分区
+#fdisk /dev/hdb
+
+Device contains neither a valid DOS partition table, nor Sun, SGI or OSF disklabel
+Building a new DOS disklabel. Changes will remain in memory only,
+until you decide to write them. After that, of course, the previous
+content won't be recoverable.
+ 
+Warning: invalid flag 0x0000 of partition table 4 will be corrected by w(rite)
+ 
+Command (m for help): n
+Command action
+   e   extended
+   p   primary partition (1-4)
+p
+Partition number (1-4): 1
+First cylinder (1-520, default 1): 
+Using default value 1
+Last cylinder or +size or +sizeM or +sizeK (1-520, default 520): 
+Using default value 520
+ 
+Command (m for help): p              //显示分区表
+Disk /dev/hdb: 268 MB, 268369920 bytes
+16 heads, 63 sectors/track, 520 cylinders
+Units = cylinders of 1008 * 512 = 516096 bytes
+ 
+   Device Boot      Start         End      Blocks   Id  System
+/dev/hdb1               1         520      262048+  83  Linux
+ 
+Command (m for help): t        //指定分区格式为8e 可以键入L 查看分区格式列表
+Selected partition 1
+Hex code (type L to list codes): 8e
+Changed system type of partition 1 to 8e (Linux LVM)
+ 
+Command (m for help): p        //可以看到分区格式变为了LVM格式
+Disk /dev/hdb: 268 MB, 268369920 bytes
+16 heads, 63 sectors/track, 520 cylinders
+Units = cylinders of 1008 * 512 = 516096 bytes
+ 
+   Device Boot      Start         End      Blocks   Id  System
+/dev/hdb1               1         520      262048+  8e  Linux LVM
+ 
+Command (m for help): w         // 将分区信息写入磁盘 并退出
+The partition table has been altered!
+ 
+Calling ioctl() to re-read partition table.
+Syncing disks.
+[root@localhost ~]# 
+
+再次查看磁盘信息
+#fdisk -l
+ 
+Disk /dev/hda: 10.7 GB, 10737377280 bytes
+255 heads, 63 sectors/track, 1305 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+ 
+   Device Boot      Start         End      Blocks   Id  System
+/dev/hda1   *           1          13      104391   83  Linux
+/dev/hda2              14        1305    10377990   8e  Linux LVM
+ 
+Disk /dev/hdb: 268 MB, 268369920 bytes
+16 heads, 63 sectors/track, 520 cylinders
+Units = cylinders of 1008 * 512 = 516096 bytes
+ 
+   Device Boot      Start         End      Blocks   Id  System
+/dev/hdb1               1         520      262048+  8e  Linux LVM
+
+使用partprobe工具 创建分区并且在不重新启动机器的情况下系统能够识别这些分区
+#partprobe  
+
+
+2.在新硬盘上创建物理卷
+pvcreate <磁盘或分区设备名>  //使用pvcreate命令创建物理卷
+
+#pvcreate /dev/hdb1
+Physical volume "/dev/hdb1" successfully created
+
+#pvs
+#pvdisplay 
+两个命令都可以查看物理卷信息
+
+3.将新创建的物理卷添加到卷组test
+vgcreate <卷组名><物理设备名>[<物理设备名>...]
+
+#vgcreate test /dev/hdb1 
+Volume group "test" successfully created
+
+
+#pvscan                       //查看物理卷对应设备名称
+ PV /dev/hdb1   VG test         lvm2 [252.00 MB / 252.00 MB free]
+ PV /dev/hda2   VG VolGroup00   lvm2 [9.88 GB / 0    free]
+ Total: 2 [10.12 GB] / in use: 2 [10.12 GB] / in no VG: 0 [0   ]
+
+#vgs
+#vgdisplay
+以上命令查看卷组相关信息
+
+
+4.在卷组test种创建逻辑卷
+
+格式1：lvcreate <-L/--size 逻辑卷大小[kKmMgGtT]> <-n/--name 逻辑卷名称> <卷组名称>
+格式2：lvcreate <-l/--extents LogicalExtentsNumber> <-n/--name 逻辑卷名称> <卷组名称>
+
+#vgdislpaly | grep "Free  PE"   //查看卷组剩余PE
+
+Free  PE / Size       63 / 252.00 MB           //空余PE 前面63表示PE数量每块PE默认为4M  后面表示总大小事252M
+Free  PE / Size       0 / 0  
+
+将怎个卷组创建逻辑卷
+# lvcreate -L 252M -n www test
+# lvcreate -l 63 -n www test
+
+-L 后面的值跟 PE总量 
+-l 后面的值跟 PE数量 
+
+
+#lvs
+#lvdisplay
+以上命令查看逻辑卷相关信息
+LVM系统在/dev/mapper 目录下创建了该逻辑卷的控制设备,将逻辑卷映射到它的物理卷
+
+#ls -l /dev/wwwVG/
+
+#ls -l /dev/mapper
+
+
+5.在逻辑卷中创建ext3文件系统
+#mkfs -t ext3 /dev/wwwVG/www
+
+修改挂载点 /etc/fstab
+
+/dev/wwwVG/www        /www      ext3    defaults 0 0
+
+#mkdir /www 
+
+#mount -a    //当前生效
+
+
