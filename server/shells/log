@@ -1,0 +1,8 @@
+#!/bin/bash
+cd /var/log
+#rm -rf 1.txt
+#time=`date |awk {'print $2,"",$3'}`
+time=`date |awk {'print $2,$3'}`
+cat /dev/null > 1.txt
+cat secure | grep Fail | grep "$time" > 1.txt
+cat 1.txt | mail -s 'Fail-172.16.10.2' yu.wu@kuanrf.com
