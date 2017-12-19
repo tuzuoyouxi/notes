@@ -1,0 +1,18 @@
+grant all privileges on quartz2.* to quartz2@'%' identified by 'kuanrf1234$'; 
+flush privileges;
+
+
+UPDATE user SET password=PASSWORD("new password") WHERE user='username';
+
+
+grant select on gateway.* to lmj@'%' identified by 'lmj123456' 
+
+grant all privileges on gateway.* to gateway@'%' identified by 'www+juhefu+cn+2015';
+ 
+flush privileges;
+
+
+
+grant all privileges on gateway.* to wuyu@'192.168.%' identified by 'jd73$57s';
+
+flush privileges;
