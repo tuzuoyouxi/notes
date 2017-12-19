@@ -1,0 +1,41 @@
+rpm -Uvh http://ftp.linux.ncsu.edu/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+yum -y install salt-master
+
+
+yum -y install salt-minion
+
+
+vi /etc/salt/master
+
+interface: 192.168.2.140
+auto_accept: True
+file_roots:
+     base:
+ 	- /srv/salt
+
+vi /etc/salt/minion
+
+master: 192.168.2.140
+
+id: test-02
+
+
+
+
+service salt-master start
+service salt-minion start
+
+salt 'test-02' test.ping
+
+
+Minion did not return. [No response]
+ cat pki/minion/minion_master.pub 
+
+rm -fr pki/minion/minion_master.pub
+
+service salt-minion restart
+
+修改id名字
+
+
