@@ -1,0 +1,58 @@
+centos5.x之后自带rsync包
+启动rsync
+/usr/bin/rsync --daemon 
+查看进程
+#ps -ef | grep rsync
+#kill pid
+
+
+/etc/rsyncd.conf 创建这个文件
+uid = nobody
+gid = nobody
+use chroot = no
+max connections = 4
+pid file = /var/run/rsyncd.pid
+lock file = /var/run/rsync.lock
+log file = /var/log/rsyncd.log
+ 
+[www]
+path =/opt/test
+ignore errors
+read only = true
+list = false
+hosts allow =192.168.1.103
+auth users = backup
+secrets file =/etc/backup.pass
+
+创建/etc/backup.pass 
+backup:123456
+
+修改权限为600 不然会报错
+#chmod 600 /etc/backup.pass
+
+客户端设置 同样权限为600 不然提示输密码
+#vi /etc/rsync.pass
+123456
+
+执行命令
+
+#rsync -vzrtopg --delete --progress --password-file=/etc/rsync.pass backup@192.168.1.102::www /opt/test
+
+成功后显示
+receiving file list ... 
+3 files to consider
+./                  
+test1.txt
+         102 100%   99.61kB/s    0:00:00 (xfer#1, to-check=1/3)
+test/
+ 
+sent 96 bytes  received 268 bytes  728.00 bytes/sec
+total size is 102  speedup is 0.28
+
+排除文件夹
+#rsync -vzrtopg --delete --progress --password-file=/data/rsync.pass --exclude 'logs' cashier@192.168.115.10::prjdf /data/app.one.com
+
+
+rsync: link_stat "." (in mysql) failed: Permission denied (13)
+修改服务器目录权限 755
+
