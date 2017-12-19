@@ -1,0 +1,8 @@
+grant insert,delete,update,insert on database.table to user@'ip' identified by password;
+
+
+grant insert on database.table to user@'%' ;
+
+
+show grants for username ;
+
