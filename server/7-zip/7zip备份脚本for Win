@@ -1,0 +1,3 @@
+windows 下 7zip 备份实例
+
+"C:\Program Files\7-Zip\7z.exe" a "D:\backup\test_%Date:~0,4%%Date:~5,2%%Date:~8,2%%Time:~0,2%%Time:~3,2%.zip" c:\pass 
