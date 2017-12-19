@@ -1,0 +1,17 @@
+salt "*" cmd.run 'cat /etc/passwd'
+
+salt "*" test.ping
+
+salt "*" pkg.install "httpd"
+
+salt "*" service.status httpd
+
+salt "*" user.add test home=/data/test
+
+salt "*" user.chgroups test groups=root
+
+salt "*" saltutil.sync_modules
+
+salt "*" cp.get_dir salt://test1  /data/test1
+
+salt '*' netwokr.interfaces
