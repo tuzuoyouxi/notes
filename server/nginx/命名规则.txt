@@ -1,0 +1,11 @@
+nginx配置标准
+    1、配置文件路径: /etc/nginx
+    2、主配置文件：/etc/nginx/nginx.conf
+    3、虚拟主机配置文件目录: /etc/nginx/sites
+        虚拟主机配置文件: /etc/nginx/sites/域名.conf
+    4、证书文件存放地址: /etc/nginx/certs
+        证书文件命名: /etc/nginx/certs/域名.crt
+                      /etc/nginx/certs/域名.key
+    5、日志文件存放: /data/logs/nginx
+        日志文件名称: /data/logs/nginx/域名_access.log
+        日志文件名称: /data/logs/nginx/域名_error.log
