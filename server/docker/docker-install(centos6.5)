@@ -1,0 +1,37 @@
+cd /etc/yum.repos.d 
+wget http://www.hop5.in/yum/el6/hop5.repo
+yum install kernel-ml-aufs kernel-ml-aufs-devel
+
+
+修改grub的主配置文件/etc/grub.conf，设置default=0，表示第一个title下的内容为默认启动的kernel（一般新安装的内核在第一个位置）。
+ sed -i 's/default=1/default=0/' /etc/grub.conf
+
+
+[root@localhost ~]# uname -r
+3.10.5-3.el6.x86_64
+
+[root@localhost ~]# grep aufs /proc/filesystems
+nodev    aufs
+
+安装docker
+  1、首先关闭selinux：
+setenforce 0
+sed -i '/^SELINUX=/c\SELINUX=disabled' /etc/selinux/config
+
+ 2、在Fedora EPEL源中已经提供了docker-io包，下载安装epel：
+rpm -ivh http://mirrors.sohu.com/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm
+sed -i 's/^mirrorlist=https/mirrorlist=http/' /etc/yum.repos.d/epel.repo
+
+3、yum安装docker-io：
+
+yum -y install docker-io
+  4、启动docker：
+
+service docker start
+  5、查看docker版本：
+
+docker --version
+
+Docker version 1.7.1, build 786b29d/1.7.1
+
+
