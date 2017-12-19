@@ -1,0 +1,148 @@
+https://wiki.iminho.me/docs/show/9
+
+环境
+centos 6.5
+php 5.6
+mysql 5.6
+nginx 1.10.3
+
+1.安装nginx
+
+vi /etc/yum.repos.d/nginx.repo
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/OS/OSRELEASE/$basearch/
+gpgcheck=0
+enabled=1
+ 
+Replace “OS” with “rhel” or “centos”, depending on the distribution used, and “OSRELEASE” with “5”, “6”, or “7”, for 5.x, 6.x, or 7.x versions, respectively.
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/6/$basearch/
+gpgcheck=0
+enabled=1
+
+yum install nginx
+
+nginx -v 
+
+2.安装mysql
+
+安装mysql
+
+yum remove mysql*
+
+rpm -ivh http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+
+yum install mysql-server
+
+service mysqld start
+
+mysql_secure_installation
+
+3.安装PHP
+
+rpm -ivh http://mirror.webtatic.com/yum/el6/latest.rpm
+
+yum install php56w php56w-mysql php56w-gd php56w-imap php56w-ldap php56w-odbc php56w-pear php56w-xml php56w-xmlrpc php56w-mcrypt php56w-mbstring php56w-devel php56w-pecl-memcached  php56w-common php56w-pdo php56w-cli php56w-pecl-memcache php56w-bcmath php56w-fpm
+
+
+Error: Package: php56w-mcrypt-5.6.30-1.w6.x86_64 (webtatic)
+           Requires: libmcrypt.so.4()(64bit)
+ You could try using --skip-broken to work around the problem
+ You could try running: rpm -Va --nofiles --nodigest
+
+ yum  install epel-release  //扩展包更新包
+yum  update //更新yum源
+yum install libmcrypt libmcrypt-devel mcrypt mhash  就ok了
+
+4.安装smartwiki
+
+
+mkdir -p /data/logs/nginx
+mkdir -p /data/web/
+
+cd /data/web
+
+yum -y install git
+
+git clone https://github.com/lifei6671/SmartWiki.git
+
+sudo curl -sS https://getcomposer.org/installer | sudo php
+sudo mv composer.phar /usr/local/bin/composer
+
+composer config -g repo.packagist composer https://packagist.phpcomposer.com
+此步骤需要普通用户执行
+
+切换回ROOT 
+
+chmod 777 SmartWiki
+su - wuyu
+cd SmartWiki
+composer install
+
+sudo chmod -R 0777 storage
+sudo chmod -R 0777 public
+sudo chmod -R 0777 vendor
+
+# 生成配置文件
+mv .env.example .env
+
+# 设置配置文件权限
+sudo chmod 0777 .env
+
+# 生成加密密钥
+php artisan key:generate
+
+
+6.配置nginx
+
+service php-fpm start
+service iptables stop
+
+
+添加nginx 配置文件
+include /etc/nginx/sites/*.conf;
+
+server {
+    listen       80;
+    server_name  wiki.juhefu.cn;
+
+    charset      utf-8;
+
+    access_log  /data/logs/nginx/wiki.juhefu.cn.access.log  main;
+    set $root_path '/data/web/SmartWiki/public';
+    root $root_path;
+    #try_files $uri $uri/ @rewrite;
+    index index.php index.html;
+    location / {
+
+                try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_index  index.php;
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass  127.0.0.1:9000;
+                fastcgi_param PATH_INFO $fastcgi_path_info;
+                fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    location ~* ^/(css|img|js|flv|swf|download)/(.+)$ {
+        root $root_path;
+    }
+}
+
+
+
+7. 配置SmartWiki
+创建数据库
+create database smart_wiki
+
+
+
+
