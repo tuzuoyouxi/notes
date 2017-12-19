@@ -1,0 +1,12 @@
+[root@zabbix fonts]# ls 
+DejaVuSans.ttf  STXIHEI.ttf
+
+vim include/defines.inc.php 
+//define('ZBX_GRAPH_FONT_NAME',         'DejaVuSans'); // font file name
+define('ZBX_GRAPH_FONT_NAME',           'STXIHEI'); // font file name
+
+//define('ZBX_FONT_NAME', 'DejaVuSans');
+define('ZBX_FONT_NAME', 'STXIHEI')
+
+从另外机器拖一份字体文件
+

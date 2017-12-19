@@ -1,0 +1,125 @@
+install zabbix 3.0.1
+
+yum install wget -y
+
+安装mysql
+
+yum remove mysql*
+
+rpm -ivh http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+
+yum install mysql-server
+
+service mysqld start
+
+mysql_secure_installation
+
+mysql -u root -p
+
+GRANT ALL PRIVILEGES ON zabbix.* TO zabbix@localhost IDENTIFIED BY 'zabbix';
+
+
+
+安装PHP 5.6
+rpm -ivh http://repo.webtatic.com/yum/el6/latest.rpm
+
+yum install httpd php56w php56w-mysql php56w-gd php56w-imap php56w-ldap php56w-odbc php56w-pear php56w-xml php56w-xmlrpc php56w-mcrypt php56w-mbstring php56w-devel php56w-pecl-memcached  php56w-common php56w-pdo php56w-cli php56w-pecl-memcache php56w-bcmath php56w-fpm
+
+
+
+Error: Package: php56w-mcrypt-5.6.27-1.w6.x86_64 (webtatic)
+           Requires: libmcrypt.so.4()(64bit)
+ You could try using --skip-broken to work around the problem
+ You could try running: rpm -Va --nofiles --nodigest
+
+
+yum  install epel-release  //扩展包更新包
+yum  update //更新yum源
+yum install libmcrypt libmcrypt-devel mcrypt mhash  就ok了
+
+*配置/etc/php.ini
+
+post_max_size=16M
+
+max_execution_time=300
+
+max_input_time=300
+
+date.timezone=Europe/Riga Asia/Chongqing 
+
+always_populate_raw_post_data=-1
+
+
+
+git clone https://github.com/zabbixcn/curl-rpm
+
+cd curl-rpm/RPMS
+
+yum install curl-7.29.0-25.el6.x86_64.rpm  libcurl-7.29.0-25.el6.x86_64.rpm  libcurl-devel-7.29.0-25.el6.x86_64.rpm
+
+curl –V 
+
+groupadd zabbix
+
+useradd -g zabbix zabbix
+
+rpm -ivh http://repo.zabbix.com/zabbix/3.0/rhel/6/x86_64/zabbix-release-3.0-1.el6.noarch.rpm
+
+yum install zabbix-server-mysql 
+
+yum install zabbix-web-mysql
+
+yum install zabbix-agent
+
+yum install zabbix-get
+
+cd /usr/share/doc/zabbix-server-mysql-3.0.4/
+
+ zcat create.sql.gz | mysql -uroot -pzabbix zabbix
+
+mkdir /var/www/html/zabbix
+
+cd /usr/share/zabbix/
+
+cp -a . /var/www/html/zabbix/
+
+chown -R apache:apache /var/www/html/zabbix
+
+chkconfig httpd on
+
+chkconfig mysqld on
+
+chkconfig zabbix-server on
+
+chkconfig zabbix-agent on
+
+service zabbix-server start
+
+
+
+/usr/sbin/zabbix_server: error while loading shared libraries: libmysqlclient.so.16: cannot open shared object file: No such file or directory
+
+
+yum -y install mysql-community-libs-compat
+
+[root@localhost lib]# mkdir /var/lib/mysql
+[root@localhost lib]# ln -s /tmp/mysql.sock /var/lib/mysql/mysql.sock
+[root@localhost lib]# /etc/rc.d/init.d/mysqld restart
+
+
+
+
+zabbix3.0  Unable to create the configuration file
+
+chmod 777 /etc/zabbix/web 
+
+
+问题
+No package zabbix-server-mysql available.
+
+yum remove zabbix-release
+yum clean all
+
+重复安装需要清理yum缓存
+
+
