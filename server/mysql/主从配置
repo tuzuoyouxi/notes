@@ -1,0 +1,98 @@
+修改主服务器master:
+   #vi /etc/my.cnf
+       [mysqld]
+       log-bin=mysql-bin   //[必须]启用二进制日志
+       server-id=222      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
+
+修改从服务器slave:
+   #vi /etc/my.cnf
+       [mysqld]
+       log-bin=mysql-bin   //[不是必须]启用二进制日志
+       server-id=226      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
+
+重启两台服务器的mysql
+   /etc/init.d/mysql restart
+
+
+在主服务器上建立帐户并授权slave
+
+GRANT REPLICATION SLAVE ON *.* to 'slave'@'%' identified by 'slave123456';
+
+GRANT REPLICATION SLAVE ON *.* to 'slave1'@'%' identified by 'test234H7D6';
+
+登录主服务器的mysql，查询master的状态
+   mysql>show master status;
+   +------------------+----------+--------------+------------------+
+   | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |
+   +------------------+----------+--------------+------------------+
+   | mysql-bin.000004 |      308 |              |                  |
+   +------------------+----------+--------------+------------------+
+
+配置从服务器Slave：
+ mysql>change master to master_host='192.168.145.222',master_user='mysync',master_password='q123456',master_log_file='mysql-bin.000004',master_log_pos=308;
+change master to master_host='192.168.113.11',master_user='slave1',master_password='test234H7D6',master_log_file='log_bin.000163',master_log_pos=75271751;
+change master to master_host='192.168.113.11',master_user='jhfreplicate',master_password='juhefu@)!^replicate',master_log_file='log_bin.000163',master_log_pos=75271751;
+
+CHANGE MASTER TO master_host='192.168.113.11',master_user='slave1',master_password='test234H7D6',MASTER_LOG_FILE='log_bin.000163', MASTER_LOG_POS=804827737
+
+CHANGE MASTER TO master_host='172.16.20.200',master_user='slave',master_password='slave123456',MASTER_LOG_FILE='mysql-bin.000004', MASTER_LOG_POS=2536;
+
+CHANGE MASTER TO master_host='192.168.113.10',master_user='jhfreplicate',master_password='juhefu@)!^replicate', MASTER_LOG_FILE='log_bin.000186', MASTER_LOG_POS=698059930
+
+ Mysql>start slave;    //启动从服务器复制功能
+
+
+ mysql> show slave status\G
+
+   *************************** 1. row ***************************
+
+              Slave_IO_State: Waiting for master to send event
+              Master_Host: 192.168.2.222  //主服务器地址
+              Master_User: mysync   //授权帐户名，尽量避免使用root
+              Master_Port: 3306    //数据库端口，部分版本没有此行
+              Connect_Retry: 60
+              Master_Log_File: mysql-bin.000004
+              Read_Master_Log_Pos: 600     //#同步读取二进制日志的位置，大于等于Exec_Master_Log_Pos
+              Relay_Log_File: ddte-relay-bin.000003
+              Relay_Log_Pos: 251
+              Relay_Master_Log_File: mysql-bin.000004
+              Slave_IO_Running: Yes    //此状态必须YES
+              Slave_SQL_Running: Yes     //此状态必须YES
+                    ......
+
+主从服务器测试
+
+creatdatabase gateway
+
+
+
+恢复
+
+slave stop;
+SET GLOBAL sql_slave_skip_counter = 1;
+slave start;
+
+
+
+
+flush tables with read lock;
+
+
+unlock tables;
+
+
+/data/mysql/mysql-5.6.30-linux-glibc2.5-x86_64/bin/mysqlbinlog --no-defaults --base64-output=decode-rows -v -v log_bin.000166 |grep -A 20 '595357940' | more
+
+desc  i_merch_month_tran_sum;
+select * from i_merch_month_tran_sum where MERCH_CODE='M10000199';
+
+
+.主键冲突、表已存在等错误代码如1062,1032,1060等，可以在mysql主配置文件指定
+
+略过此类异常并继续下条sql同步，这样也可以避免很多主从同步的异常中断
+
+[mysqld]
+
+slave-skip-errors = 1062,1032,1060
+
+
