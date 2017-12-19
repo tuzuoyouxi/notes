@@ -1,0 +1,152 @@
+cetnos 6.5 mini 
+
+
+mysql
+
+yum remove mysql*
+
+
+rpm -ivh http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+
+yum install mysql-server
+
+
+service mysqld start
+
+mysql_secure_installation
+
+create database walle
+
+
+php
+
+rpm -Uvh  http://mirror.webtatic.com/yum/el6/latest.rpm
+
+yum install -y php56w.x86_64 php56w-cli.x86_64 php56w-common.x86_64 php56w-gd.x86_64 php56w-ldap.x86_64 php56w-mbstring.x86_64 php56w-mcrypt.x86_64 php56w-mysql.x86_64 php56w-pdo.x86_64
+
+
+Error: Package: php56w-mcrypt-5.6.30-1.w6.x86_64 (webtatic)
+           Requires: libmcrypt.so.4()(64bit)
+ You could try using --skip-broken to work around the problem
+ You could try running: rpm -Va --nofiles --nodigest
+
+ yum  install epel-release  //扩展包更新包
+yum  update //更新yum源
+yum install libmcrypt libmcrypt-devel mcrypt mhash  就ok了
+
+yum install php56w-fpm -y
+
+
+
+nginx
+vi /etc/yum.repos.d/nginx.repo
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/OS/OSRELEASE/$basearch/
+gpgcheck=0
+enabled=1
+ 
+Replace “OS” with “rhel” or “centos”, depending on the distribution used, and “OSRELEASE” with “5”, “6”, or “7”, for 5.x, 6.x, or 7.x versions, respectively.
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/6/$basearch/
+gpgcheck=0
+enabled=1
+
+
+
+yum install nginx
+
+nginx -v 
+
+
+ansible
+
+mkdir /home/ansible && cd  /home/ansible
+rpm -ivh http://mirrors.sohu.com/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm
+yum install ansible -y
+
+
+walle
+git clone git@github.com:meolu/walle-web.git
+
+
+[root@localhost data]# git clone git@github.com:meolu/walle-web.git
+Initialized empty Git repository in /data/walle-web/.git/
+The authenticity of host 'github.com (192.30.253.113)' can't be established.
+RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,192.30.253.113' (RSA) to the list of known hosts.
+Permission denied (publickey).
+fatal: The remote end hung up unexpectedly
+
+
+ssh-keygen -t rsa -C "tuzuoyouxi@qq.com"
+
+cat .ssh/id_rsa.pub
+
+git clone git@github.com:meolu/walle-web.git
+
+cd walle-web
+
+vi config/local.php
+
+
+安装composer，如果已安装跳过
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer                # PATH目录
+
+安装vendor
+cd walle-web
+composer install --prefer-dist --no-dev --optimize-autoloader -vvvv
+
+
+
+
+./yii walle/setup
+
+配置nginx
+
+server {
+    listen       80;
+    server_name  walle.compony.com; # 改你的host
+    root /the/dir/of/walle-web/web; # 根目录为web
+    index index.php;
+
+    # 建议放内网
+    # allow 192.168.0.0/24;
+    # deny all;
+
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        try_files $uri = 404;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+}
+
+service php-fpm start
+
+
+添加机器信任
+
+如何添加用户ssh-key到目标机群部署用户ssh-key信任
+宿主机操作
+
+ps aux|grep php          # 假如www_php为你的php进程用户
+su - www_php             # 切换用户
+ssh-keygen -t rsa        # 如果你都没有生成过rsa_key的话，如果有则跳过
+ssh-copy-id -i ~/.ssh/id_rsa.pub www_remote@remote_host  # 加入目标机群信任，需要输入www_remote密码
+
+
+注意
+
+提示svn 用户名错误  检查SVN配置 还有就是目的主机需要安装SVN 
+/tmp/walle 查看错误日志
+
