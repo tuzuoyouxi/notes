@@ -1,0 +1,27 @@
+yum install erlang
+报错
+
+wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+rpm -ivh 
+epel-release-6-8.noarch.rpm
+
+
+yum install erlang
+
+yum install rabbitmq-server
+
+find / -name rabbitmq-plugins
+
+/usr/lib/rabbitmq/bin/rabbitmq-plugins enable rabbitmq_management
+
+rabbitmqctl add_user admin admin123
+rabbitmqctl set_user_tags admin administrator
+
+
+service rabbitmq-server restart
+
+http://192.168.2.143:15672
+
+admin
+admin123
+
