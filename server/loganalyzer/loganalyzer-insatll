@@ -1,0 +1,147 @@
+centos 6.5 mini
+关闭selinux
+关闭iptables
+ip 192.168.5.71
+
+安装lanmp环境
+
+yum -y install httpd mysql* php*
+
+启动服务并加入开机启动
+service httpd restart
+
+chkconfig httpd on
+
+service mysqld start
+
+chkconfig mysqld on 
+
+设置mysql密码
+
+mysqladmin -uroot password 'test123456'
+
+测试php环境
+
+cd /var/www/html
+
+cat > index.php <<EOF
+<?php
+phpinfo();
+?>
+EOF
+
+打开浏览器访问ip http://192.168.5.71
+可以看到php测试页
+
+检查并安装rsyslog服务端软件
+
+rpm -qa | grep rsyslog
+
+安装rsyslog 连接mysql数据库的模块
+yum install rsyslog-mysql -y 
+
+配置服务端
+
+cd /usr/share/doc/rsyslog-mysql-5.8.10
+mysql -uroot -ptest123456 < createDB.sql
+
+创建rsyslog用户在mysql下的相关权限
+
+mysql -u root -p
+mysql> grant all on Syslog.* to rsyslog@localhost identified by '123456';
+mysql>flush privileges;
+mysql>exit
+
+配置rsyslog-mysql模块，并开启UDP服务端口获取网内其他LINUX系统日志
+
+vi /etc/rsyslog.conf
+
+在 #### MODULES #### 下添加下面两行
+$ModLoad ommysql 
+*.* :ommysql:localhost,Syslog,rsyslog,123456
+
+开启相关日志模块
+
+# vi /etc/rsyslog.conf
+
+$ModLoad immark    #immark是模块名，支持日志标记
+
+$ModLoad imudp    #imupd是模块名，支持udp协议
+
+$UDPServerRun 514    #允许514端口接收使用UDP和TCP协议转发过来的日志
+
+重启服务
+
+service rsyslog restart
+
+配置客户端
+rpm -qa | grep rsyslog
+
+配置rsyslog客户端发送本地日志到服务器
+
+vi /etc/rsyslog.conf
+*.* @192.168.5.71
+
+注明: TCP @@IP  UDP @IP
+
+重启rsyslog服务
+service rsyslog restart
+
+编辑/etc/bashrc 将客户端执行的所有命令写入系统日志/var/log/messages中
+
+vi /etc/bashrc
+在文件尾部增加一行
+
+export PROMPT_COMMAND='{ msg=$(history 1 | { read x y; echo $y; });logger "[euid=$(whoami)]":$(who am i):[`pwd`]"$msg"; }'
+
+设置其生效
+source /etc/bashrc
+
+测试rsyslog server 是否生效
+
+客户端 
+ls 
+pwd
+cat /etc/password
+
+服务端
+tail messages
+可以看到客户端的输出
+
+安装 loganalyzer
+
+tar xvf loganalyzer-4.1.5.tar.gz
+cd loganalyzer-4.1.5
+mkdir -p /var/www/html/loganalyzer
+cp -r src/*  /var/www/html/loganalyzer/
+
+配置loganalyzer
+
+http://192.168.5.71/loganalyzer
+
+第二步
+touch /var/www/html/loganalyzer/config.php
+chmod 666 /var/www/html/loganalyzer/config.php
+
+第7步
+Database Tablename  SystemEvent  注意大写 
+
+
+
+
+
+
+远程配置客户端
+服务端启用TCP 连接 
+
+# Provides TCP syslog reception
+#$ModLoad imtcp
+#$InputTCPServerRun 514
+$ModLoad imtcp 引用tcp协议的模块
+$InputTCPServerRun 514 设置tcp协议使用端口
+
+
+
+
+*.* @@192.168.5.71:514
+
