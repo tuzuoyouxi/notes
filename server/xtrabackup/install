@@ -1,0 +1,34 @@
+yum install perl-DBI perl-DBD-MySQL perl-Time-HiRes perl-IO-Socket-SSL
+
+yum install perl-DBD-MySQL
+
+yum install perl-Time-HiRes
+
+yum install perl-IO-Socket-SSL
+
+
+rpm -ivh https://www.percona.com/downloads/percona-release/redhat/latest/percona-release-0.1-4.noarch.rpm
+
+
+yum -y install percona-xtrabackup 
+
+ Requires: libev.so.4()(64bit)
+
+rpm -ivh libev-4.03-3.el6.x86_64.rpm
+
+
+
+备份
+innobackupex --defaults-file=/etc/my.cnf  --user=root --password='juhefu@)#dbsa@)!^' --database=gateway /data/mysql_backup 
+
+还原
+service mysqld stop
+innobackupex --defaults-file=/etc/my.cnf --copy-back /data/mysqlbackup/2017-01-12_02-00-01/
+
+
+chown -R mysql:mysql /data/mysql
+
+
+ mysqldump -uroot -p --single-transaction --flush-logs --master-data --all-databases > all.sql
+
+--host 127.0.0.1
