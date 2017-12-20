@@ -1,0 +1,9 @@
+#读写文件
+#o = open('/data/test','w+')
+#o.write('test123')
+
+#f=open('/data/test','r')
+#c=f.read()
+#print(c)
+#f.close()
+
