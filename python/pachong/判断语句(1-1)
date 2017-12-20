@@ -1,0 +1,10 @@
+#判断语句
+
+#def count_login():
+#    password=input('passowrd:')
+#    if password=='12345':
+#        print('输入成功')
+#    else:
+#        print('输入错误，请再输入')
+#        count_login()
+#count_login()
