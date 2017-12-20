@@ -1,0 +1,6 @@
+#函数
+
+#def change＿number(number):
+#    hiding_number=number.replace(number[5:10],'*'*5)
+#    print(hiding_number)
+#change_number('13508373001')
