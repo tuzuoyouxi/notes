@@ -23,3 +23,17 @@ print(a[0:13])
 
 a='www baidu com'
 print(a.split(' '))
+
+a='there is apples'
+b=a.replace('is','are')
+print(b)
+
+a=' python is cool '
+print(a.strip())
+
+a='***python *is *good***'
+print(a.strip('*!'))
+
+a='{} is my love'.format('python')
+print(a)
+
