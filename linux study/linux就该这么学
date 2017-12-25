@@ -1,0 +1,8 @@
+常用RPM 软件包命令
+RPM -ivh filename.rpm  安装软件的命令格式
+RPM -uvh filenmae.rpm  升级软件的命令格式
+RPM -e   filename.rpm  卸载软件的命令格式
+rpm -qpi filename.rpm  查询软件描述信息的命令格式
+rpm -qpl filename.rpm  列出软件文件信息的命令格式
+rpm -qf  filename.rpm  查询文件属于哪个RPM的命令格式
+
