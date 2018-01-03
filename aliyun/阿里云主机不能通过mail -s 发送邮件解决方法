@@ -33,3 +33,5 @@ smtp-server: 554 DT:SPM 163 smtp11,D8CowACHmeyOS0xal1LoAw--.62178S2 1514949518,p
 参考地址 ：http://help.163.com/09/1224/17/5RAJ4LMH00753VB8.html
 •554 DT:SPM 发送的邮件内容包含了未被许可的信息，或被系统识别为垃圾邮件。请检查是否有用户发送病毒或者垃圾邮件；
 
+其余参考信息
+http://blog.51cto.com/irow10/1812638
