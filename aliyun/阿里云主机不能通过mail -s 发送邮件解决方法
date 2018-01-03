@@ -1,0 +1,35 @@
+
+修改/etc/mailx.rc 添加如下信息
+原配置：
+
+set smtp=smtp.126.com:465
+set smtp-auth=login
+set smtp-auth-user=xxxxxx@126.com
+set smtp-auth-password=xxxxxxxxxxxxx
+set ssl-verify=ignore
+set nss-config-dir=/etc/pki/nssdb/
+set from=xxxxxx@126.com
+
+
+起作用的配置：
+
+set smtp=smtps://smtp.126.com:465
+set smtp-auth=login
+set smtp-auth-user=xxxxxx@126.com
+set smtp-auth-password=xxxxxxxxxxxxx
+set ssl-verify=ignore
+set nss-config-dir=/etc/pki/nssdb/
+set from=xxxxxx@126.com
+
+
+echo '测试' | mail -s -v '测试邮件' tuzuoyouxi@qq.com
+
+会遇见的问题
+554 DT:SPM 163 smtp11,D8CowACHmeyOS0xal1LoAw--.62178S2 1514949518,please see http://mail.163.com/help/help_spam_16.htm?ip=47.104.13.1&hostid=smtp11&time=1514949518
+smtp-server: 554 DT:SPM 163 smtp11,D8CowACHmeyOS0xal1LoAw--.62178S2 1514949518,please see http://mail.163.com/help/help_spam_16.htm?ip=47.104.13.1&hostid=smtp11&time=1514949518
+"/root/dead.letter" 0/0
+. . . message not sent.
+
+参考地址 ：http://help.163.com/09/1224/17/5RAJ4LMH00753VB8.html
+•554 DT:SPM 发送的邮件内容包含了未被许可的信息，或被系统识别为垃圾邮件。请检查是否有用户发送病毒或者垃圾邮件；
+
