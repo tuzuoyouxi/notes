@@ -34,3 +34,63 @@ chkconfig foo off    systemctl disables foo.service  开启不自动启动
 chkconfig foo        systemctl is-enabled foo.service  查看特定服务是否为开机自动启动
 chkconfig --list     system list-unit-files --type=service    查看各个级别下服务的启动与禁用情况
 
+文件测试所用的参数
+
+-d    测试文件是否为目录类型
+-e    测试文件是否存在
+-f    判断是否为一般文件
+-r    测试当前用户是否有权限读取
+-w    测试当前用户是否有权限写入
+-x    测试当前用户是否有权限执行
+
+#[ -d /etc/fstab ]
+#echo $?
+
+#[ -f /etc/fstab ]
+#echo $?
+
+可用的整数比较运算符
+
+-eq   是否等于
+-ne   是否不等于
+-gt   是否大于
+-lt   是否小于
+-le   是否等于或小于
+-ge   是否大于或等于
+
+[ 10 -gt 10 ]
+echo $?
+
+[ 10 -eq 10 ]
+echo $?
+
+
+[root@linuxprobe ~]# free -m
+total used free shared buffers cached
+Mem: 1826 1244 582 9 1 413
+-/+ buffers/cache: 830 996
+Swap: 2047 0 2047
+[root@linuxprobe ~]# free -m | grep Mem:
+Mem: 1826 1244 582 9
+[root@linuxprobe ~]# free -m | grep Mem: | awk '{print $4}'
+582
+[root@linuxprobe ~]# FreeMem=`free -m | grep Mem: | awk '{print $4}'`
+[root@linuxprobe ~]# echo $FreeMem
+582
+[root@linuxprobe ~]# [ $FreeMem -lt 1024 ] && echo "Insufficient Memory"
+Insufficient Memory
+
+常见的字符串比较运算符
+=     比较字符串内容是否相同
+!=    比较字符串内容是否不同
+-z    判断是字符串内容生死否为空
+
+[root@linuxprobe ~]# [ -z $String]
+[root@linuxprobe ~]# echo $?
+0
+
+[root@linuxprobe ~]# echo $LANG
+en_US.UTF-8
+[root@linuxprobe ~]# [ $LANG != "en.US" ] && echo "Not en.US"
+Not en.US
+
