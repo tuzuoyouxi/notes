@@ -124,3 +124,16 @@ fi
 0
 
 可以看出当测试文件夹的时候，-d -e 参数返回值都是一致的，这点是由于LINUX下一切都是文件
+
+
+使用双分支的if条件语句来验证某台主机是否在线
+[root@linuxprobe ~]# vim chkhost.sh
+#!/bin/bash
+ping -c 3 -i 0.2 -W 3 $1 &> /dev/null
+if [ $? -eq 0 ]
+then
+echo "Host $1 is On-line."
+else
+echo "Host $1 is Off-line."
+fi
+
