@@ -94,3 +94,33 @@ en_US.UTF-8
 [root@linuxprobe ~]# [ $LANG != "en.US" ] && echo "Not en.US"
 Not en.US
 
+
+if 条件测试语句
+下面使用单分支的 if 条件语句来判断/media/cdrom 目录是否存在，若存在就结束条件判
+断和整个 Shell 脚本，反之则去创建这个目录：
+
+[root@linuxprobe ~]# vim mkcdrom.sh
+#!/bin/bash
+DIR="/media/cdrom"
+if [ ! -e $DIR ]
+then
+mkdir -p $DIR
+fi
+
+由于测试目录 是 -d 参数  做过以下测试 
+测试文件
+[root@localhost local]# [ -e /etc/fstab ]
+[root@localhost local]# echo $?
+0
+[root@localhost local]# [ -d /etc/fstab ]
+[root@localhost local]# echo $?
+1
+测试文件夹
+[root@localhost local]# [ -d /usr/local ]
+[root@localhost local]# echo $?
+0
+[root@localhost local]# [ -e /usr/local ]
+[root@localhost local]# echo $?
+0
+
+可以看出当测试文件夹的时候，-d -e 参数返回值都是一致的，这点是由于LINUX下一切都是文件
