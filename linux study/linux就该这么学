@@ -171,3 +171,17 @@ sudo 服务中的可用参数以及作用
 -k                清空密码的有效时间,下次执行sudo时需要再次进行密码验证
 -b                在后台执行指定的命令
 -p                更改询问密码的提示语
+
+
+常用的LVM部署命令
+
+表 7-2 常用的 LVM 部署命令
+
+功能  物理卷管理     卷组管理     逻辑卷管理
+扫描  pvscan        vgscan      lvscan
+建立  pvcreate      vgcreate    lvcreate
+显示  pvdisplay     vgdisplay   lvdisplay
+删除  pvremove      vgremove    lvremove
+扩展                vgextend    lvextend
+缩小                vgreduce    lvreduce
+
