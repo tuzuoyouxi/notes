@@ -185,3 +185,19 @@ sudo 服务中的可用参数以及作用
 扩展                vgextend    lvextend
 缩小                vgreduce    lvreduce
 
+
+iptables中常用的参数以及作用
+
+-P          设置默认策略
+-F          清空规则链
+-L          查看规则链
+-A          在规则链的末尾加入新规则
+-I num      在规则链的头部加入新规则
+-D num      删除某一条规则
+-s          匹配来源地址IP/MASK,加叹号"!"表示除这个IP外
+-d          匹配目标地址
+-i 网卡名称  匹配从这块网卡流入的数据
+-o 网卡名称  匹配从这块网卡流出的数据
+-p          匹配协议，如TCP UDP ICMP
+--dport num  匹配目标端口号
+--sport num  匹配来源端口号
