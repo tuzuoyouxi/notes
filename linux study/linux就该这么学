@@ -201,3 +201,25 @@ iptables中常用的参数以及作用
 -p          匹配协议，如TCP UDP ICMP
 --dport num  匹配目标端口号
 --sport num  匹配来源端口号
+
+
+firewalld-cmd 命令中使用的参数以及作用
+--get-default-zone              查询默认的区域名称
+--set-default-zone=<区域名称>    设置默认的区域，使其永久生效
+--get-zones                     显示可用的区域
+--get-services                  显示预先定义的服务
+--get-active-zones              显示当亲啊正在使用的区域与网卡名称
+--add-source=                   将源自此IP或子网的流量导向指定的区域
+--remove-source=                不再将源自此IP或子网的流量导向某个指定区域
+--add-interface=<网卡名称>       将源自该网卡的所有流量都导向某个指定区域
+--change-interface=<网卡名称>    将摸个网卡与区域进行并联
+--list-all                      显示当前区域的网卡配置参数、资源、端口以及服务等信息
+--list-all-zones                显示所有区域的网卡配置参数、资源、端口以及服务等信息
+--add-service=<服务名>           设置默认区域允许该服务的流量
+--add-port=<端口号/协议>         设置默认区域允许该端口的流量
+--remove-service=<服务名>        设置默认区域不再允许该服务的流量
+--remove-port=<端口号/协议>      设置默认区域不再允许该端口的流量
+--reload                        让“永久生效”的配置规则立即生效，并覆盖当前的配置规则
+--panic-on                      开启应急状况模式
+--panic-off                     关闭应急状况模式
+
