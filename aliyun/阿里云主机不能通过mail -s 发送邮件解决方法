@@ -35,3 +35,20 @@ smtp-server: 554 DT:SPM 163 smtp11,D8CowACHmeyOS0xal1LoAw--.62178S2 1514949518,p
 
 其余参考信息
 http://blog.51cto.com/irow10/1812638
+
+使用QQ邮箱配置方法
+
+set ssl-verify=ignore
+
+set from=tuzuoyouxi@qq.com
+
+set smtp=smtps://smtp.qq.com
+
+set smtp-auth-user=tuzuoyouxi@qq.com
+
+set smtp-auth-password=xiyrqflcyeydhdieix
+
+set smtp-auth=login
+
+set nss-config-dir=/etc/pki/nssdb/
+
