@@ -37,6 +37,7 @@ smtp-server: 554 DT:SPM 163 smtp11,D8CowACHmeyOS0xal1LoAw--.62178S2 1514949518,p
 http://blog.51cto.com/irow10/1812638
 
 使用QQ邮箱配置方法
+使用前需在QQ邮箱开启pop/smtp 服务 短信发送通知 然后记住授权码
 
 set ssl-verify=ignore
 
