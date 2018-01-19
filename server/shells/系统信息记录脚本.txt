@@ -1,0 +1,17 @@
+#!/bin/bash
+OUTFILE=/root/capstats.csv
+DATE=`date +%m/%d/%y`
+TIME=`date +%k:%M:%S`
+
+TIMEOUT=`uptime`
+MEMORY=`free -m`
+DISK=`df -h`
+
+
+USERS=`echo $TIMEOUT | awk '{print $6}'`
+DISKFREE=`echo $DISK | sed -n '/[0-9]/p' | sed -n '1p' | awk '{print $9}'`
+FREEMEMORY=`echo $MEMORY | awk '{print $10}' | sed 's/$/&M/g'` 
+LOAD=`echo $TIMEOUT | awk '{print $12}' `
+
+
+echo "$DATE,$TIME,$USERS,$DISKFREE,$FREEMEMORY,$LOAD" >> $OUTFILE

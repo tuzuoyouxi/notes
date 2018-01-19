@@ -1,0 +1,16 @@
+#!/bin/bash
+
+FILE=/root/capstats.csv
+TEMP=/root/capstats.html
+DATE=`date +"%A, %B %d, %Y"`
+
+echo "<html><body><h2>Report for $DATE</h2>" >$TEMP
+echo "<table border=\"1\">" >> $TEMP
+echo "<tr><td>DATE</td><td>TIME</td><td>Users</td><td>Diskfree</td><td>Free Memory</td><td>Load</td>" >>$TEMP
+
+cat $FILE | awk -F, '{
+	printf "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>"$1,$2,$3,$4,$5,$6;}' >>$TEMP
+
+echo "</table></body></html>" >>$TEMP
+mail -a $TEMP -s "report form system" 68811875@qq.com < /dev/null
+rm -f $TEMP
