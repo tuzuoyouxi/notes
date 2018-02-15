@@ -1,0 +1,32 @@
+
+参考:https://www.ubuntukylin.com/ukylin/forum.php?mod=viewthread&tid=7688&highlight=qq
+
+默认17.10 没有i386的相关依赖包
+安装过程会遇见如下错误
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+您也许需要运行“apt --fix-broken install”来修正上面的错误。
+下列软件包有未满足的依赖关系：
+ wine-qqintl:i386 : 依赖: libasound2:i386
+                    依赖: libpng12-0:i386 但无法安装它
+                    依赖: libsm6:i386 但是它将不会被安装
+                    依赖: libncurses5:i386 但是它将不会被安装
+                    依赖: libpulse0:i386 但是它将不会被安装
+                    依赖: libmpg123-0:i386 但是它将不会被安装
+                    依赖: libasound2-plugins:i386 但是它将不会被安装
+                    推荐: libasound2-plugins-extras:i386 但无法安装它
+
+#sudo apt-get install xxxx:i386  安装相应的包
+
+其中libpng12 这个包从16.10版本后不再支持，需要另外安装，这个包已经上传
+
+安装完依赖包后
+
+下载qq http://www.ubuntukylin.com/application/show.php?lang=cn&id=279
+
+解压后进入目录
+#sudo dpkg -i xxx.deb xxx.deb xxx.deb  即可
+
+安装源地址
+/etc/apt/sources.list.d/
