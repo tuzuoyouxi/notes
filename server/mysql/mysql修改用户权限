@@ -6,3 +6,6 @@ grant insert on database.table to user@'%' ;
 
 show grants for username ;
 
+update mysql.user set host='192.123.211.110' where host like '%218.247.217.66%';
+
+flush privileges;
