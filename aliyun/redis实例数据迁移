@@ -13,7 +13,7 @@ Redis 数据迁移方案
 3.数据迁移 redis-port
 Redis-port -h 
   Restore方式
-  ![图片001](https://github.com/tuzuoyouxi/notes/blob/master/aliyun/001.png)
+ 
   
  
 
