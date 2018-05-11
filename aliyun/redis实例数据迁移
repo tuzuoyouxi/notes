@@ -1,0 +1,37 @@
+Redis 数据迁移方案
+1.参考
+   http://www.runoob.com/redis/redis-tutorial.html
+   https://blog.csdn.net/wyc_cs/article/details/53150108
+   https://blog.csdn.net/wyt568/article/details/62237923
+   https://github.com/CodisLabs/redis-port
+2.自建redis 数据同步到自建redis
+1.备份
+   SAVA 命令 把redis 保存到redis安装目录 dump.rdb 
+2.恢复
+   拷贝dump.rdb文件到redis安装目录下，启动服务即可,启动前需要停止redis服务,删除之前的dump.rdb文件. 
+   获取redis目录 可以通过 config get dir 查看
+3.数据迁移 redis-port
+Redis-port -h 
+  Restore方式
+  
+  
+ 
+
+  
+Dump 
+
+
+
+SYNC
+
+
+
+
+4.遇见的问题
+  在使用redis-port 的时候 会提示pid 错误什么的,需要在当前目录创建logs文件夹
+  Mkdir logs 
+  然后再执行 就没问题了
+  
+5.云实例
+ 目前无法通过RDS redis 实例 数据同步到RDS redis 实例，只能通过其中一个RDS redis备份数据，然后下载，然后传备份文件到另一台同一VPC下的ECS上，ECS 和RDS redis
+同一内网，然后通过redis-port 数据传输.
