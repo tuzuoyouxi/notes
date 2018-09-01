@@ -1,0 +1,19 @@
+一、打开Battle.net.config
+　　WIN7路径：C:\Users\Administrator\AppData\Roaming\Battle.net
+　　MAC路径：~/Library/Application Support/Battle.net
+　　XP路径：C:\Documents and Settings\Administrator\Application Data\Battle.net
+　　注：AppData文件夹默认是隐藏的，所以你需要在文件夹选项的查看选项里，勾选显示隐藏文件、文件夹，这样就可以看到AppData了!
+　　二、修改Battle.net.config
+　　改Client语法下的AllowedRegions区域，
+　　将AllowedRegions区域加入CN;US;EU;KR
+　　Regions就是你的登录可以选择的区域，CN就是国服;US美服;EU欧服;KR韩/台服。(根据自己的喜好选择对应的区域)
+　　Locales是你的登录器语言，加入zhCN就是简体中文版登录器。
+　　"Client":
+　　{
+　　"AllowedRegions": "CN;US;EU;KR",
+　　"AllowedLocales": "zhCN;deDE;enGB;enUS;esMX;esES;frFR;itIT;plPL;ptBR;ruRU;koKR;zhTW"
+　　}
+　　},
+
+
+到这里就完成了修改。这时你可以打开允许战网多个进程选项，1个开国服，1个开外服享受1个登录器带来的便捷！
