@@ -1,1 +1,9 @@
+问题描述：在配置堆叠中很容易出现堆叠起不来，想重新配置
+1.The device is not in the current IRF
+解决方法
+irf member x rename n  # x为现有成员编号，N为想设置的成员编号
+比如 dis cu  看到
+irf member 2 priority 1   这种 一般reset save 无法初始化的 重启后还有
+需要设置
+irf memeber 2 rename 1  #会出现提示 保存 重启后 恢复到初始值
 
