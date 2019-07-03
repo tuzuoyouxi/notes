@@ -1,6 +1,5 @@
 	书名
-MYSQL
-  mysql 数据库入门
+MYSQL	mysql 数据库入门
 	深入理解mysql 
 	mysql 技术内幕(第五版)
 	Mysql必知必会
@@ -10,29 +9,36 @@ MYSQL
 	MySQL管理之道:性能调优、高可用与监控(附光盘)
 	
 	
-NETWORK	
-  cisco voip Cvioce学习指南（第三版）
+NETWORK	cisco voip Cvioce学习指南（第三版）
 	TCP/IP 路由技术（第一卷第二版）
 	MPLS和VPN体系结构（第2卷）
 	CCNP安全VPN认证考试指南（第二版）
 	IPSec VPN 实战指南
 	wireshark 网络分析实战
+	CCNP ONT 认证考试指南
+	CCNP 学习指南 组建CISCO多层交换网络(BCMSN) 第四版 上下
+	CCNP 学习指南 组建可扩展的CISCO互联网络(BSCI) 第三版 上下
+	CCNP ISCW 认证考试指南
+	网络工程师教程（第三版） 软考
+	CCNA学习指南 第五版 640-801
 	
-LINUX	
-  RHCE 认证学习手册 EX200 &EX 300
+	
+LINUX	RHCE 认证学习手册 EX200 &EX 300
 	red hat enterprise7 系统管理 
-	linux shell 命令行及脚本编程实例
-	Linux命令行和shell脚本编程宝典
 	linux 命令行与shell脚本编程大全（第二版）
 	linux shell 命令行及脚本编程实例详解
-	shell 脚本学习指南
+	linux 命令行和shell脚本编程宝典 （BIBLE）
+	Linux 系统命令及Shell脚本实践指南
 	LINUX性能优化大师
-	Linux系统命令及Shell脚本实践指南
+	shell 脚本学习指南
+	日志管理与分析 权威指南
+	UNIX/LINUX 系统管理技术手册 第四版
+	构建高可用的linux服务器（第四版）
+	Linux 就该这么学
+	决战Nginx:系统卷 – 高性能Web服务器详解与运维
+	决战Nginx技术卷:高性能Web服务器部署与运维(基于php、Java、ASP.NET等)
 	
-	
-	
-PYTHON	
-	Python Web开发实战
+PYTHON	Python Web开发实战
 	Python网络编程(第3版)
 	图灵程序设计丛书:Python网络编程攻略
 	Python爬虫开发与项目实战
@@ -42,24 +48,56 @@ PYTHON
 	python 开发实践
 	python 编程初学者指南
 	python 基础教程（第二版）
+	python 基础教程（第三版）
 	python cookbook(第三版)
-	python 编程
+	python 编程 （第四版）
 	Python自动化运维:技术与最佳实践
+	head first python
+	笨办法学Python 3
+	Flask Web开发实战:入门、进阶与原理解析
+	Flask Web开发 基于Python的Web应用开发实战 第2版
 	
-zabbix	
-	zabbix企业分布式监控系统
+zabbix	zabbix企业分布式监控系统
 	zabbix监控系统深度实践
 	
-DNS	
-	DNS与BIND（第五版）
-  
-  
-TCP/IP	
-	TCP/IP详解卷1:协议
+	
+DNS	DNS与BIND（第五版）
+	
+TCP/IP	TCP/IP详解卷1:协议
 	TCP/IP详解•卷2：实现
 	TCP.IP详解(卷3):TCP事务协议.HTTP和UNIX域协议
 	
-群集	
-	精通SaltStack
+安全	Nmap 扫描实践教程
+	Nmap 扫描基础教程
+	Kali Linux 安全渗透教程 新手版
+	信息技术 开放系统互联 系统管理 第6部分  日志控制功能
+	中华人民共和国密码行业标准
+	SSL VPN 技术规范
+	IPsec VPN 技术规范
 	
 	
+群集	精通SaltStack
+	saltstack 运维实践
+	基于Apache Kylin构建大数据分析平台
+	Apache Kylin权威指南
+	Linux集群和自动化运维
+	
+其他	ACCP 使用JAVA 理解程序逻辑
+	PHP 从入门到精通（第二版）
+	C语言 从入门到精通（第二版）
+	JAVA 从入门到精通
+	Edius专业级 视频与音频制作
+	
+语言	新东方 雅思词汇 词根+联想
+	中日交流 标准日本语 上下
+	
+云计算	云计算原理与实践
+	云安全原理与实践
+	企业迁云实战
+	云上运维及应用实践教程（基础篇）
+	云上运维及应用实践教程（提高篇）
+	
+K8S	Docker技术入门与实战(第3版)
+	Docker:容器与容器云(第2版)
+	Kubernetes进阶实战
+	Kubernetes权威指南:从Docker到Kubernetes实践全接触(纪念版)
